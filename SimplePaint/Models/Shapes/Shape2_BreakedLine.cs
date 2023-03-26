@@ -2,6 +2,7 @@
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using System.Collections.Generic;
+using SimplePaint.Models.Safes;
 using static SimplePaint.Models.Shapes.PropsN;
 
 namespace SimplePaint.Models.Shapes
@@ -9,21 +10,14 @@ namespace SimplePaint.Models.Shapes
     public class Shape2_BreakedLine : IShape
     {
         private static readonly PropsN[] props = new[] { PName, PDots, PColor, PThickness };
-
         public PropsN[] Props => props;
-
         public string Name => "Ломанная";
-
         public Shape? Build(Mapper map)
         {
             if (map.GetProp(PName) is not string @name) return null;
-
             if (map.GetProp(PDots) is not SafePoints @dots || !@dots.Valid) return null;
-
             if (map.GetProp(PColor) is not string @color) return null;
-
             if (map.GetProp(PThickness) is not int @thickness) return null;
-
             return new Polyline
             {
                 Name = "sn_" + @name,
@@ -37,24 +31,17 @@ namespace SimplePaint.Models.Shapes
             if (shape is not Polyline @polyline) return false;
             if (@polyline.Name == null || !@polyline.Name.StartsWith("sn_")) return false;
             if (@polyline.Stroke == null) return false;
-
             if (map.GetProp(PDots) is not SafePoints @dots) return false;
-
             map.SetProp(PName, @polyline.Name[3..]);
-
             @dots.Set((Points)@polyline.Points);
-
             map.SetProp(PColor, ((SolidColorBrush)@polyline.Stroke).Color.ToString());
             map.SetProp(PThickness, (int)@polyline.StrokeThickness);
-
             return true;
         }
-
         public Dictionary<string, object?>? Export(Shape shape)
         {
             if (shape is not Polyline @polyline) return null;
             if (@polyline.Name == null || !@polyline.Name.StartsWith("sn_")) return null;
-
             return new()
             {
                 ["name"] = @polyline.Name[3..],
@@ -66,12 +53,9 @@ namespace SimplePaint.Models.Shapes
         public Shape? Import(Dictionary<string, object?> data)
         {
             if (!data.ContainsKey("name") || data["name"] is not string @name) return null;
-
             if (!data.ContainsKey("points") || data["points"] is not Points @dots) return null;
-
             if (!data.ContainsKey("stroke") || data["stroke"] is not SolidColorBrush @color) return null;
             if (!data.ContainsKey("thickness") || data["thickness"] is not short @thickness) return null;
-
             return new Polyline
             {
                 Name = "sn_" + @name,

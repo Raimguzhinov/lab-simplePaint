@@ -14,10 +14,8 @@ namespace SimplePaint.Models.Shapes
     {
         public PropsN[] Props { get; }
         public string Name { get; }
-
         public Shape? Build(Mapper map);
         public bool Load(Mapper map, Shape shape);
-
         public Dictionary<string, object?>? Export(Shape shape);
         public Shape? Import(Dictionary<string, object?> data);
     }

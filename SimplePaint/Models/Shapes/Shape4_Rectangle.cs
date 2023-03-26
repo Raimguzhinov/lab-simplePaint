@@ -2,6 +2,7 @@
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using System.Collections.Generic;
+using SimplePaint.Models.Safes;
 using static SimplePaint.Models.Shapes.PropsN;
 
 namespace SimplePaint.Models.Shapes
@@ -9,27 +10,17 @@ namespace SimplePaint.Models.Shapes
     public class Shape4_Rectangle : IShape
     {
         private static readonly PropsN[] props = new[] { PName, PStartDot, PWidth, PHeight, PColor, PThickness, PFillColor };
-
         public PropsN[] Props => props;
-
         public string Name => "Прямоугольник";
-
         public Shape? Build(Mapper map)
         {
             if (map.GetProp(PName) is not string @name) return null;
-
             if (map.GetProp(PStartDot) is not SafePoint @start || !@start.Valid) return null;
-
             if (map.GetProp(PWidth) is not SafeNum @width || !@width.Valid) return null;
-
             if (map.GetProp(PHeight) is not SafeNum @height || !@height.Valid) return null;
-
             if (map.GetProp(PColor) is not string @color) return null;
-
             if (map.GetProp(PFillColor) is not string @fillColor) return null;
-
             if (map.GetProp(PThickness) is not int @thickness) return null;
-
             var p = @start.Point;
 
             return new Rectangle
@@ -48,24 +39,19 @@ namespace SimplePaint.Models.Shapes
             if (shape is not Rectangle @rect) return false;
             if (@rect.Name == null || !@rect.Name.StartsWith("sn_")) return false;
             if (@rect.Stroke == null || @rect.Fill == null) return false;
-
             if (map.GetProp(PStartDot) is not SafePoint @start) return false;
             if (map.GetProp(PWidth) is not SafeNum @width) return false;
             if (map.GetProp(PHeight) is not SafeNum @height) return false;
-
             map.SetProp(PName, @rect.Name[3..]);
-
             @start.Set(new Point(@rect.Margin.Left, @rect.Margin.Top));
             @width.Set((short)@rect.Width);
             @height.Set((short)@rect.Height);
-
             map.SetProp(PColor, ((SolidColorBrush)@rect.Stroke).Color.ToString());
             map.SetProp(PFillColor, ((SolidColorBrush)@rect.Fill).Color.ToString());
             map.SetProp(PThickness, (int)@rect.StrokeThickness);
 
             return true;
         }
-
         public Dictionary<string, object?>? Export(Shape shape)
         {
             if (shape is not Rectangle @rect) return null;
@@ -85,11 +71,9 @@ namespace SimplePaint.Models.Shapes
         public Shape? Import(Dictionary<string, object?> data)
         {
             if (!data.ContainsKey("name") || data["name"] is not string @name) return null;
-
             if (!data.ContainsKey("margin") || data["margin"] is not Thickness @margin) return null;
             if (!data.ContainsKey("width") || data["width"] is not short @width) return null;
             if (!data.ContainsKey("height") || data["height"] is not short @height) return null;
-
             if (!data.ContainsKey("stroke") || data["stroke"] is not SolidColorBrush @color) return null;
             if (!data.ContainsKey("fill") || data["fill"] is not SolidColorBrush @fillColor) return null;
             if (!data.ContainsKey("thickness") || data["thickness"] is not short @thickness) return null;
