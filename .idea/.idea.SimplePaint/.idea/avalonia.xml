@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="SimplePaint/Views/MainWindow.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Pages/Shape1_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Pages/Shape2_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Pages/Shape3_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Shape1_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Shape2_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Shape3_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Shape4_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Shape5_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/Shape6_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+        <entry key="SimplePaint/Views/ShapeT_UserControl.axaml" value="SimplePaint/SimplePaint.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
