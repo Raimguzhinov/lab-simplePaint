@@ -15,7 +15,10 @@ namespace SimplePaint.ViewModels
         private int _shaperN;
         private readonly Mapper _map;
         private readonly Canvas _canv;
-
+        private readonly static string[] Colors = new[] {
+            "Yellow", "Blue", "Green", "Red", "Orange", "Brown", "Pink",
+            "Aqua", "Lime", "White", "LightGray", "DarkGray", "Black"
+        };
         private readonly UserControl[] _contentArray = new UserControl[] {
             new Shape1_UserControl(),
             new Shape2_UserControl(),
@@ -25,13 +28,10 @@ namespace SimplePaint.ViewModels
             new Shape6_UserControl()
         };
         private IBrush _addColor = Brushes.White;
-        public IBrush AddColor { get => _addColor; set => this.RaiseAndSetIfChanged(ref _addColor, value); }
-
         private void Update()
         {
             bool valid = _map.ValidInput();
             bool valid2 = _map.ValidName();
-
             AddColor = valid ? valid2 ? Brushes.Lime : Brushes.Yellow : Brushes.Pink;
             ShapeNameColor = valid2 ? Brushes.Lime : Brushes.Yellow;
 
@@ -54,32 +54,29 @@ namespace SimplePaint.ViewModels
         {
             if (inst != null && inst is MainWindowViewModel @mwvm) @mwvm.Update();
         }
-
+        public IBrush AddColor { get => _addColor; set => this.RaiseAndSetIfChanged(ref _addColor, value); }
+        public ObservableCollection<ShapeListBoxItem> Shapes { get => _map.shapes; }
         public MainWindowViewModel(MainWindow mw)
         {
             _content = _contentArray[0];
             _map = new(Update, this);
             _canv = mw.Find<Canvas>("canvas");
             Update();
-
             Add = ReactiveCommand.Create<Unit, Unit>(_ => { FuncAdd(); return new Unit(); });
             Clear = ReactiveCommand.Create<Unit, Unit>(_ => { FuncClear(); return new Unit(); });
             Export = ReactiveCommand.Create<string, Unit>(n => { FuncExport(n); return new Unit(); });
             Import = ReactiveCommand.Create<string, Unit>(n => { FuncImport(n); return new Unit(); });
         }
-
         public int SelectedShaper
         {
             get => _shaperN;
             set { this.RaiseAndSetIfChanged(ref _shaperN, value); _map.ChangeFigure(value); Content = _contentArray[value]; }
         }
-
         public UserControl Content
         {
             get => _content;
             set => this.RaiseAndSetIfChanged(ref _content, value);
         }
-
         private void FuncAdd()
         {
             Shape? newy = _map.Create(false);
@@ -107,51 +104,33 @@ namespace SimplePaint.ViewModels
             foreach (var beginner in beginners) _canv.Children.Add(beginner);
             Update();
         }
-
         public ReactiveCommand<Unit, Unit> Add { get; }
         public ReactiveCommand<Unit, Unit> Clear { get; }
         public ReactiveCommand<string, Unit> Export { get; }
         public ReactiveCommand<string, Unit> Import { get; }
-
         public void ShapeTap(string name)
         {
             var item = _map.ShapeTap(name);
             this.RaiseAndSetIfChanged(ref _curShape, item, nameof(SelectedShape));
         }
-
         private IBrush _nameColor = Brushes.White;
         public string ShapeName { get => _map.shapeName; set { this.RaiseAndSetIfChanged(ref _map.shapeName, value); Update(); } }
         public IBrush ShapeNameColor { get => _nameColor; set => this.RaiseAndSetIfChanged(ref _nameColor, value); }
-
         public string ShapeColor { get => _map.shapeColor; set { this.RaiseAndSetIfChanged(ref _map.shapeColor, value); Update(); } }
         public string ShapeFillColor { get => _map.shapeFillColor; set { this.RaiseAndSetIfChanged(ref _map.shapeFillColor, value); Update(); } }
         public int ShapeThickness { get => _map.shapeThickness; set { this.RaiseAndSetIfChanged(ref _map.shapeThickness, value); Update(); } }
-
         public SafeNum ShapeWidth => _map.shapeWidth;
         public SafeNum ShapeHeight => _map.shapeHeight;
         public SafeNum ShapeHorizDiagonal => _map.shapeHorizDiagonal;
         public SafeNum ShapeVertDiagonal => _map.shapeVertDiagonal;
-
         public SafePoint ShapeStartDot => _map.shapeStartDot;
         public SafePoint ShapeEndDot => _map.shapeEndDot;
         public SafePoint ShapeCenterDot => _map.shapeCenterDot;
         public SafePoints ShapeDots => _map.shapeDots;
-
         public SafeGeometry ShapeCommands => _map.shapeCommands;
-
-        private readonly static string[] Colors = new[] {
-            "Yellow", "Blue", "Green", "Red",
-            "Orange", "Brown", "Pink", "Aqua",
-            "Lime",
-            "White", "LightGray", "DarkGray", "Black"
-        };
         public static string[] ColorsArr { get => Colors; }
-
-        public ObservableCollection<ShapeListBoxItem> Shapes { get => _map.shapes; }
-
         private bool _serviceVisible = true;
         public bool ServiceVisible { get => _serviceVisible; set => this.RaiseAndSetIfChanged(ref _serviceVisible, value); }
-
         private ShapeListBoxItem? _curShape;
         public ShapeListBoxItem? SelectedShape
         {
