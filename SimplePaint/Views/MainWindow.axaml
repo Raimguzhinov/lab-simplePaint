@@ -54,9 +54,9 @@
 				<MenuItem Header="Импортировать из XML" Command="{Binding Import}" CommandParameter="XML"/>
 			</MenuItem>
 		</Menu>
-		<Grid ColumnDefinitions="2*,5*,*">
+		<Grid ColumnDefinitions="2.35*,5*,*">
 			<Border Classes="b">
-				<Grid RowDefinitions="*,30*,1.24*" ColumnDefinitions="*,*" Classes="grid">
+				<Grid RowDefinitions="Auto,Auto,Auto,*" ColumnDefinitions="*,*" Classes="grid">
 					<ComboBox Name="comboBoxShape" SelectedIndex="{Binding SelectedShaper}" Width="460" Grid.ColumnSpan="2">			
 						<ComboBoxItem>Прямая линия </ComboBoxItem>
 						<ComboBoxItem>Ломанная линия </ComboBoxItem>
@@ -66,8 +66,9 @@
 						<ComboBoxItem>Составная фигура </ComboBoxItem>
 					</ComboBox>
 					<ContentControl Grid.Row="1" Grid.ColumnSpan="2" Content="{Binding Content}"/>
-					<Button Name="buttonAdd" Command="{Binding Add}" Grid.Row="2">Добавить</Button>
-					<Button Name="buttonClear" Command="{Binding Clear}" Grid.Row="2" Grid.Column="1">Сброс</Button>
+					<ContentControl Grid.Row="2" Grid.ColumnSpan="2" Content="{Binding SharedContent}"/>
+					<Button Name="buttonAdd" Command="{Binding Add}" Grid.Row="3" VerticalAlignment="Bottom">Добавить</Button>
+					<Button Name="buttonClear" Command="{Binding Clear}" Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom">Сброс</Button>
 				</Grid>
 			</Border>
 			<Border Grid.Column="1" Classes="b">
