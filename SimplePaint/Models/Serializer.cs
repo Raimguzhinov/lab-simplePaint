@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Xml.Linq;
+using SimplePaint.Models.Safes;
 
 namespace SimplePaint.Models
 {
-    public class Utils
+    public static class Serializer
     {
 
         public static string Base64Encode(string plainText)
@@ -180,7 +181,7 @@ namespace SimplePaint.Models
             StringBuilder items = new();
             foreach (var entry in dict)
                 if (IsComposite(entry.Value))
-                    items.Append("<" + entry.Key + ">" + ToXMLHandler(entry.Value, level + "\t") + "</" + entry.Key + ">");
+                    items.Append(level + "\t<" + entry.Key + ">" + ToXMLHandler(entry.Value, level + "\t\t") + level + "\t</" + entry.Key + ">");
                 else attrs.Append(" " + entry.Key + "=\"" + ToXMLHandler(entry.Value, "{err}") + "\"");
 
             if (items.Length == 0) return level + "<Dict" + attrs.ToString() + "/>";
@@ -268,7 +269,7 @@ namespace SimplePaint.Models
                     if (sb.Length > 1) sb.Append(", ");
                     sb.Append(ToJSONHandler(el.Name.LocalName));
                     sb.Append(": ");
-                    sb.Append(ToJSONHandler(el));
+                    sb.Append(ToJSONHandler(el.Elements().ToArray()[0]));
                 }
                 sb.Append('}');
             }
@@ -287,10 +288,10 @@ namespace SimplePaint.Models
                 }
                 sb.Append(']');
             }
+            else sb.Append("Type??" + name);
             return sb.ToString();
         }
         public static string Xml2json(string xml) => ToJSONHandler(XElement.Parse(xml));
-
         public static string? Obj2xml(object? obj) => Json2xml(Obj2json(obj));
         public static object? Xml2obj(string xml) => Json2obj(Xml2json(xml));
 
@@ -307,6 +308,14 @@ namespace SimplePaint.Models
             target.Arrange(new Rect(size));
             bitmap.Render(target);
             bitmap.Save(path);
+        }
+        public static string TrimAll(this string str) {
+            StringBuilder sb = new();
+            for (int i = 0; i < str.Length; i++) {
+                if (i > 0 && str[i] == ' ' && str[i - 1] == ' ') continue;
+                sb.Append(str[i]);
+            }
+            return sb.ToString().Trim();
         }
     }
 }
