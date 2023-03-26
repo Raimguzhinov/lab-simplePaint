@@ -1,46 +1,43 @@
-﻿using Avalonia.Media;
-using System;
+﻿using System;
+using Avalonia.Media;
 
-namespace SimplePaint.Models
+namespace SimplePaint.Models.Safes
 {
     public class SafeNum : ForcePropertyChange, ISafe
     {
-        private int num;
-        private bool valid = true;
-        private readonly Action<object?>? hook;
-        private readonly object? inst;
+        private int _num;
+        private bool _valid = true;
+        private readonly Action<object?>? _hook;
+        private readonly object? _inst;
         public SafeNum(int num, Action<object?>? hook = null, object? inst = null)
         {
-            this.num = num; this.hook = hook; this.inst = inst;
+            this._num = num; this._hook = hook; this._inst = inst;
         }
         public SafeNum(string init, Action<object?>? hook = null, object? inst = null)
         {
-            this.hook = hook; this.inst = inst;
+            this._hook = hook; this._inst = inst;
             Set(init);
-            if (!valid) throw new FormatException("Недействующий формат инициализации SafeNum: " + init);
+            if (!_valid) throw new FormatException("Недействующий формат инициализации SafeNum: " + init);
         }
-        public int Num => num;
-
+        public int Num => _num;
         private void Upd_valid(bool v)
         {
-            valid = v;
-            hook?.Invoke(inst);
+            _valid = v;
+            _hook?.Invoke(_inst);
         }
         private void Re_check()
         {
-            if (!valid)
+            if (!_valid)
             {
-                valid = true;
+                _valid = true;
             }
         }
         public void Set(int n)
         {
-            num = n;
-            valid = true;
+            _num = n;
+            _valid = true;
         }
-
-        public bool Valid => valid;
-
+        public bool Valid => _valid;
         public void Set(string str)
         {
             int a;
@@ -49,23 +46,19 @@ namespace SimplePaint.Models
                 a = int.Parse(str);
             }
             catch { Upd_valid(false); return; }
-
             if (Math.Abs(a) > 10000) { Upd_valid(false); return; }
-
-            num = a;
+            _num = a;
             Upd_valid(true);
         }
-
         public string Value
         {
-            get { Re_check(); return num.ToString(); }
+            get { Re_check(); return _num.ToString(); }
             set
             {
                 Set(value);
                 UpdProperty(nameof(Color));
             }
         }
-
-        public IBrush Color { get => valid ? Brushes.Lime : Brushes.Pink; }
+        public IBrush Color { get => _valid ? Brushes.Lime : Brushes.Pink; }
     }
 }

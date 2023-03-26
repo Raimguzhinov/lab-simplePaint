@@ -1,6 +1,6 @@
 ﻿using Avalonia.Media;
 
-namespace SimplePaint.Models
+namespace SimplePaint.Models.Safes
 {
     internal interface ISafe
     {
