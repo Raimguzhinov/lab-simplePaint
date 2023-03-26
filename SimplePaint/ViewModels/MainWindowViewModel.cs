@@ -6,13 +6,21 @@ using SimplePaint.Models;
 using SimplePaint.Views;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using SimplePaint.Models.Safes;
+using Shape1_UserControl = SimplePaint.Views.Pages.Shape1_UserControl;
+using Shape2_UserControl = SimplePaint.Views.Pages.Shape2_UserControl;
+using Shape3_UserControl = SimplePaint.Views.Pages.Shape3_UserControl;
+using Shape4_UserControl = SimplePaint.Views.Pages.Shape4_UserControl;
+using Shape5_UserControl = SimplePaint.Views.Pages.Shape5_UserControl;
+using Shape6_UserControl = SimplePaint.Views.Pages.Shape6_UserControl;
+using ShapeT_UserControl = SimplePaint.Views.Pages.ShapeT_UserControl;
 
 namespace SimplePaint.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private UserControl _content;
         private int _shaperN;
+        private bool _serviceVisible = true;
         private readonly Mapper _map;
         private readonly Canvas _canv;
         private readonly static string[] Colors = new[] {
@@ -27,7 +35,10 @@ namespace SimplePaint.ViewModels
             new Shape5_UserControl(),
             new Shape6_UserControl()
         };
+        private UserControl _content;
+        private UserControl? _sharedContent = new ShapeT_UserControl();
         private IBrush _addColor = Brushes.White;
+        private ShapeListBoxItem? _curShape;
         private void Update()
         {
             bool valid = _map.ValidInput();
@@ -35,19 +46,21 @@ namespace SimplePaint.ViewModels
             AddColor = valid ? valid2 ? Brushes.Lime : Brushes.Yellow : Brushes.Pink;
             ShapeNameColor = valid2 ? Brushes.Lime : Brushes.Yellow;
 
-            if (_map.newName != null)
+            if (_map.shapeNewName != null)
             {
-                var name = _map.newName;
-                _map.newName = null;
+                var name = _map.shapeNewName;
+                _map.shapeNewName = null;
                 ShapeName = name;
             }
 
-            var select = _map.select_shaper;
+            var select = _map.shapeSelectShaper;
             if (select != -1)
             {
-                _map.select_shaper = -1;
+                _map.shapeSelectShaper = -1;
                 if (select == _shaperN) SelectedShaper = select == 0 ? 1 : 0;
                 SelectedShaper = select;
+                SharedContent = null; // Перебросочка
+                SharedContent = new ShapeT_UserControl();
             }
         }
         private static void Update(object? inst)
@@ -55,7 +68,7 @@ namespace SimplePaint.ViewModels
             if (inst != null && inst is MainWindowViewModel @mwvm) @mwvm.Update();
         }
         public IBrush AddColor { get => _addColor; set => this.RaiseAndSetIfChanged(ref _addColor, value); }
-        public ObservableCollection<ShapeListBoxItem> Shapes { get => _map.shapes; }
+        public ObservableCollection<ShapeListBoxItem> Shapes { get => _map.shapeS; }
         public MainWindowViewModel(MainWindow mw)
         {
             _content = _contentArray[0];
@@ -77,6 +90,10 @@ namespace SimplePaint.ViewModels
             get => _content;
             set => this.RaiseAndSetIfChanged(ref _content, value);
         }
+        public UserControl? SharedContent {
+            get => _sharedContent;
+            set => this.RaiseAndSetIfChanged(ref _sharedContent, value);
+        }
         private void FuncAdd()
         {
             Shape? newy = _map.Create(false);
@@ -91,7 +108,7 @@ namespace SimplePaint.ViewModels
             if (type == "PNG")
             {
                 ServiceVisible = false;
-                Utils.RenderToFile(_canv, "../../../Export.png");
+                Serializer.RenderToFile(_canv, "../../../Export.png");
                 ServiceVisible = true;
             }
             else _map.Export(type == "XML");
@@ -128,10 +145,15 @@ namespace SimplePaint.ViewModels
         public SafePoint ShapeCenterDot => _map.shapeCenterDot;
         public SafePoints ShapeDots => _map.shapeDots;
         public SafeGeometry ShapeCommands => _map.shapeCommands;
+        public SafeNum RenderTransformAngle => _map.shapeTformer.rotateTransformAngle;
+        public SafePoint RenderTransformCenter => _map.shapeTformer.rotateTransformCenter;
+        public SafeDPoint ScaleTransform => _map.shapeTformer.scaleTransform;
+        public SafePoint SkewTransform => _map.shapeTformer.skewTransform;
+        public ObservableCollection<string> MatrixTransform => _map.shapeTformer.matrix;
         public static string[] ColorsArr { get => Colors; }
-        private bool _serviceVisible = true;
+        
         public bool ServiceVisible { get => _serviceVisible; set => this.RaiseAndSetIfChanged(ref _serviceVisible, value); }
-        private ShapeListBoxItem? _curShape;
+        
         public ShapeListBoxItem? SelectedShape
         {
             get => _curShape;
