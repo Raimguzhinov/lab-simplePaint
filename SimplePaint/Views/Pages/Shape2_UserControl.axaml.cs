@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace SimplePaint.Views
+namespace SimplePaint.Views.Pages
 {
     public partial class Shape2_UserControl : UserControl
     {

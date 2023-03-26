@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="460" d:DesignHeight="950"
-             x:Class="SimplePaint.Views.Shape2_UserControl">
+             x:Class="SimplePaint.Views.Pages.Shape6_UserControl">
 
 	<UserControl.Styles>
 		<Style Selector="Rectangle">
@@ -21,15 +21,15 @@
 		</Style>
 	</UserControl.Styles>
 	
-	<Grid Margin="16" ColumnDefinitions="4*,6*" RowDefinitions="Auto,Auto,Auto,Auto" Classes="gr">
+	<Grid Margin="16" ColumnDefinitions="4*,6*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Classes="gr">
 		<TextBlock>Имя: </TextBlock>
-		<Border Background="LightBlue" Grid.Column="1">
+		<Border Grid.Column="1">
 			<TextBox Name="textBoxName" Text="{Binding ShapeName}"/>
 		</Border>
 
-		<TextBlock Grid.Row="1">Точки: </TextBlock>
-		<Border Background="LightBlue" Grid.Row="1" Grid.Column="1">
-			<TextBox Name="textBoxPoints" Text="{Binding ShapeDots.Value}"/>
+		<TextBlock Grid.Row="1">Команды: </TextBlock>
+		<Border Grid.Row="1" Grid.Column="1">
+			<TextBox Name="textBoxCommandPath" Text="{Binding ShapeCommands.Value}"></TextBox>
 		</Border>
 
 		<TextBlock Grid.Row="2">Цвет линии: </TextBlock>
@@ -45,5 +45,16 @@
 
 		<TextBlock Grid.Row="3">Толщина линии: </TextBlock>
 		<NumericUpDown Name="numericUpDownStroke" Grid.Row="3" Grid.Column="1" Value="{Binding ShapeThickness}" Minimum="1" Maximum="100"/>
+
+		<TextBlock Grid.Row="4">Цвет заливки: </TextBlock>
+		<ComboBox Name="comboBoxFillColor" SelectedItem="{Binding ShapeFillColor}" Grid.Row="4" Grid.Column="1" SelectedIndex="0" Items="{Binding ColorsArr}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<Border Classes="itemB">
+						<Rectangle Fill="{Binding}"/>
+					</Border>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 	</Grid>
 </UserControl>

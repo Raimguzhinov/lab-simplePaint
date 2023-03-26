@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="460" d:DesignHeight="950"
-             x:Class="SimplePaint.Views.Shape1_UserControl">
+             x:Class="SimplePaint.Views.Pages.Shape3_UserControl">
 
 	<UserControl.Styles>
 		<Style Selector="Rectangle">
@@ -15,7 +15,7 @@
 			<Setter Property="Height" Value="35"/>
 		</Style>
 		<Style Selector="Border.itemB">
-			<Setter Property="BorderBrush" Value="Red"/>
+			<Setter Property="BorderBrush" Value="LightGray"/>
 			<Setter Property="BorderThickness" Value="1"/>
 			<Setter Property="Width" Value="202"/>
 		</Style>
@@ -23,22 +23,17 @@
 	
 	<Grid Margin="16" ColumnDefinitions="4*,6*" RowDefinitions="Auto,Auto,Auto,Auto,Auto" Classes="gr">
 		<TextBlock>Имя: </TextBlock>
-		<Border Background="LightBlue" Grid.Column="1">
+		<Border Grid.Column="1">
 			<TextBox Name="textBoxName" Text="{Binding ShapeName}"/>
 		</Border>
-		
-		<TextBlock Grid.Row="1">Начальная точка: </TextBlock>
-		<Border Background="LightBlue" Grid.Row="1" Grid.Column="1">
-			<TextBox Name="textBoxStart" Text="{Binding ShapeStartDot.Value}"/>
+
+		<TextBlock Grid.Row="1">Точки: </TextBlock>
+		<Border Grid.Row="1" Grid.Column="1">
+			<TextBox Name="textBoxPoints" Text="{Binding ShapeDots.Value}"/>
 		</Border>
-		
-		<TextBlock Grid.Row="2">Конечная точка: </TextBlock>
-		<Border Background="LightBlue" Grid.Row="2" Grid.Column="1">
-			<TextBox Name="textBoxEnd" Text="{Binding ShapeEndDot.Value}"/>
-		</Border>
-		
-		<TextBlock Grid.Row="3">Цвет линии: </TextBlock>
-		<ComboBox Name="comboBoxColor" SelectedItem="{Binding ShapeColor}" Grid.Row="3" Grid.Column="1" SelectedIndex="0" Items="{Binding ColorsArr}">
+
+		<TextBlock Grid.Row="2">Цвет линии: </TextBlock>
+		<ComboBox Name="comboBoxColor" SelectedItem="{Binding ShapeColor}" Grid.Row="2" Grid.Column="1" SelectedIndex="0" Items="{Binding ColorsArr}">
 			<ComboBox.ItemTemplate>
 				<DataTemplate>
 					<Border Classes="itemB">
@@ -48,7 +43,18 @@
 			</ComboBox.ItemTemplate>
 		</ComboBox>
 
-		<TextBlock Grid.Row="4">Толщина линии: </TextBlock>
-		<NumericUpDown Name="numericUpDownStroke" Grid.Row="4" Grid.Column="1" Value="{Binding ShapeThickness}" Minimum="1" Maximum="100"/>
+		<TextBlock Grid.Row="3">Толщина линии: </TextBlock>
+		<NumericUpDown Name="numericUpDownStroke" Grid.Row="3" Grid.Column="1" Value="{Binding ShapeThickness}" Minimum="1" Maximum="100"/>
+
+		<TextBlock Grid.Row="4">Цвет заливки: </TextBlock>
+		<ComboBox Name="comboBoxFillColor" SelectedItem="{Binding ShapeFillColor}" Grid.Row="4" Grid.Column="1" SelectedIndex="0" Items="{Binding ColorsArr}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<Border Classes="itemB">
+						<Rectangle Fill="{Binding}"/>
+					</Border>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 	</Grid>
 </UserControl>

@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="460" d:DesignHeight="950"
-             x:Class="SimplePaint.Views.Shape5_UserControl">
+             x:Class="SimplePaint.Views.Pages.Shape4_UserControl">
 
 	<UserControl.Styles>
 		<Style Selector="Rectangle">
@@ -23,23 +23,23 @@
 	
 	<Grid Margin="16" ColumnDefinitions="4*,6*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" Classes="gr">
 		<TextBlock>Имя: </TextBlock>
-		<Border Background="LightBlue" Grid.Column="1">
+		<Border Grid.Column="1">
 			<TextBox Name="textBoxName" Text="{Binding ShapeName}"/>
 		</Border>
 
-		<TextBlock Grid.Row="1">Центральная точка: </TextBlock>
-		<Border Background="LightBlue" Grid.Row="1" Grid.Column="1">
-			<TextBox Name="textBoxStart" Text="{Binding ShapeCenterDot.Value}"/>
+		<TextBlock Grid.Row="1">Начальная точка: </TextBlock>
+		<Border Grid.Row="1" Grid.Column="1">
+			<TextBox Name="textBoxStart" Text="{Binding ShapeStartDot.Value}"/>
 		</Border>
 
-		<TextBlock Grid.Row="2">Гориз. диагональ: </TextBlock>
-		<Border Background="LightBlue" Grid.Row="2" Grid.Column="1">
-			<TextBox Name="textBoxWidth" Text="{Binding ShapeHorizDiagonal.Value}"/>
+		<TextBlock Grid.Row="2">Ширина: </TextBlock>
+		<Border Grid.Row="2" Grid.Column="1">
+			<TextBox Name="textBoxWidth" Text="{Binding ShapeWidth.Value}"/>
 		</Border>
-		
-		<TextBlock Grid.Row="3">Верт. диагональ: </TextBlock>
-		<Border Background="LightBlue" Grid.Row="3" Grid.Column="1">
-			<TextBox Name="textBoxHeight" Text="{Binding ShapeVertDiagonal.Value}"/>
+
+		<TextBlock Grid.Row="3">Высота: </TextBlock>
+		<Border Grid.Row="3" Grid.Column="1">
+			<TextBox Name="textBoxHeight" Text="{Binding ShapeHeight.Value}"/>
 		</Border>
 		
 		<TextBlock Grid.Row="4">Цвет линии: </TextBlock>
